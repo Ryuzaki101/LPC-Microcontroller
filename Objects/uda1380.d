@@ -1,0 +1,14 @@
+.\objects\uda1380.o: uda1380.c
+.\objects\uda1380.o: C:\Keil_v5\ARM\Inc\NXP\LPC17xx\LPC17xx.h
+.\objects\uda1380.o: C:\Keil_v5\ARM\CMSIS\Include\core_cm3.h
+.\objects\uda1380.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\uda1380.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
+.\objects\uda1380.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
+.\objects\uda1380.o: C:\Keil_v5\ARM\Inc\NXP\LPC17xx\system_LPC17xx.h
+.\objects\uda1380.o: type.h
+.\objects\uda1380.o: i2c.h
+.\objects\uda1380.o: delay.h
+.\objects\uda1380.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\objects\uda1380.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\uda1380.o: RDB1768_AUDIO.h
+.\objects\uda1380.o: uda1380.h

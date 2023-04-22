@@ -1,0 +1,17 @@
+.\objects\glcd.o: LIBS\GLCD.c
+.\objects\glcd.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\glcd.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\glcd.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\glcd.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\objects\glcd.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\time.h
+.\objects\glcd.o: C:\Keil_v5\ARM\Inc\NXP\LPC17xx\lpc17xx.h
+.\objects\glcd.o: C:\Keil_v5\ARM\CMSIS\Include\core_cm3.h
+.\objects\glcd.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\glcd.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
+.\objects\glcd.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
+.\objects\glcd.o: C:\Keil_v5\ARM\Inc\NXP\LPC17xx\system_LPC17xx.h
+.\objects\glcd.o: LIBS\LPC17xx_Bits.h
+.\objects\glcd.o: LIBS\GLCD2.h
+.\objects\glcd.o: LIBS\type.h
+.\objects\glcd.o: LIBS\Font_Regular_24_16.h
+.\objects\glcd.o: LIBS\Timing.h

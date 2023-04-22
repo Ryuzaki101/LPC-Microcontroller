@@ -1,0 +1,11 @@
+.\objects\uart.o: LIBS\uart.c
+.\objects\uart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
+.\objects\uart.o: LIBS\uart.h
+.\objects\uart.o: C:\Keil_v5\ARM\Inc\NXP\LPC17xx\lpc17xx.h
+.\objects\uart.o: C:\Keil_v5\ARM\CMSIS\Include\core_cm3.h
+.\objects\uart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\uart.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
+.\objects\uart.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
+.\objects\uart.o: C:\Keil_v5\ARM\Inc\NXP\LPC17xx\system_LPC17xx.h
+.\objects\uart.o: LIBS\stdutils.h
+.\objects\uart.o: LIBS\gpio.h

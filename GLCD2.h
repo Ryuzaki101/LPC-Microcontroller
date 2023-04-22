@@ -1,0 +1,328 @@
+//////////////////////////////////////////////////////////////////////////////////////////
+//                             DÉCLARATIONS POUR LIBRAIRIE GLCD.C                       //
+//////////////////////////////////////////////////////////////////////////////////////////
+// Auteur                 : Steve Romaric Tchuinte                                     //
+//////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//                                    DEFINES                                           //
+//////////////////////////////////////////////////////////////////////////////////////////
+#include <stdint.h>
+#include "type.h"
+
+// Pins de contrôle
+// -----------------
+#define LCD_EN	0x00080000	// P0.19
+#define LCD_LE	0x00100000	// P0.20
+#define LCD_DIR	0x00200000	// P0.21
+#define LCD_CS	0x00400000	// P0.22
+#define LCD_RS	0x00800000	// P0.23
+#define LCD_WR	0x01000000	// P0.24
+#define LCD_RD	0x02000000	// P0.25
+
+// Couleurs standard pour 65K
+// --------------------------
+#define WHITE			0xFFFF				// RGB = Blanc
+#define BLACK			0x0000				// Noir
+#define BLUE			0x003F				// Bleu (b5/b0)
+#define RED				0xF800				// Rouge (b15/b11)
+#define GREEN			0x07C0				// Vert (b10/b6)
+#define GREENLIGHT		0x3FCF				// Vert clair
+#define YELLOW			0xFFC0				// Jaune = rouge + vert
+#define CYAN			0x07FF				// Cyan = vert + bleu
+#define GREY			0xC638				// gris clair
+#define GREYDARK 		0x8430				// gris foncé
+#define GREYDARKDARK	0x4208         		// gris très foncé 00 001000
+#define PINK			0xF9CF				// rose
+#define BLUELIGHT		0x7BFF				// bleu clair
+#define ORANGE      0xF4DE
+#define ORANGE1      0xF4DF
+#define TURQUOISE   0xFFCC
+#define VGA_BLACK		0x0000
+#define VGA_WHITE		0xFFFF
+#define VGA_RED			0xF800
+#define VGA_GREEN		0x0400
+#define VGA_BLUE		  0x001F
+#define VGA_SILVER		0xC618
+#define VGA_GRAY		  0x8410
+#define VGA_MAROON		0x8000
+#define VGA_YELLOW		0xFFE0
+#define VGA_OLIVE		  0x8400
+#define VGA_LIME		  0x07E0
+#define VGA_AQUA		  0x07FF
+#define VGA_TEAL		  0x0410
+#define VGA_NAVY		  0x0010
+#define VGA_FUCHSIA		0xF81F
+#define VGA_PURPLE		0x8010
+//#define VGA_TRANSPARENT	0xFFFFFFFF
+
+// GLCD RGB color definitions;
+#define Black           0x0000      /*   0,   0,   0 */
+#define Navy            0x000F      /*   0,   0, 128 */
+#define DarkGreen       0x03E0      /*   0, 128,   0 */
+#define DarkCyan        0x03EF      /*   0, 128, 128 */
+#define Maroon          0x7800      /* 128,   0,   0 */
+#define Purple          0x780F      /* 128,   0, 128 */
+#define Olive           0x7BE0      /* 128, 128,   0 */
+#define Grey            0xF7DE
+#define LightGrey       0xC618      /* 192, 192, 192 */
+#define DarkGrey        0x7BEF      /* 128, 128, 128 */
+#define Blue            0x001F      /*   0,   0, 255 */
+#define Blue2           0x051F
+#define Green           0x07E0      /*   0, 255,   0 */
+#define Cyan            0x07FF      /*   0, 255, 255 */
+#define Red             0xF800      /* 255,   0,   0 */
+#define Magenta         0xF81F      /* 255,   0, 255 */
+#define Yellow          0xFFE0      /* 255, 255, 0   */
+#define White           0xFFFF      /* 255, 255, 255 */
+
+// Autres
+// ------
+#define LCD_WIDTH	320				// Largeur écran : écran couché
+#define LCD_HEIGHT	240				// hauteur écran : idem
+
+
+
+// Titre
+#define TXTTITLE	"Entfernungsmessung"		// titre écran
+#define	XTITLE		20								 	 // coordonneés du titre
+#define YTITLE		8
+#define COLTITLE	BLUE						 	 // couleur du titre
+
+#define TXTTITLE1	"Winkelmessung"	// titre écran
+#define	XTITLE1		50						 // coordonneés du titre
+#define YTITLE1		140
+#define COLTITLE1	BLUE				// couleur du titre
+
+
+// Angle
+#define TXTCMPT1	"Winkel = 00 Grd"		// texte du compteur
+#define XCMPT1		30					// Coordonneés compteur
+#define YCMPT1		190
+#define XVAL1		  176					// abscisse du premier chiffre
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//                                   STRUCTURES                                        //
+////////////////////////////////////////////////////////////////////////////////////////
+typedef struct
+{
+	uint16_t X1;					// coordonnées coin supérieur gauche rectangle
+	uint16_t Y1;
+	uint16_t X2;					// coordonnées coin inférieur droit rectangle
+	uint16_t Y2;
+	
+	uint16_t *Xt;					// coordonnées 1er caractère de chaque ligne du texte
+	uint16_t *Yt;
+	unsigned char *Text;			// texte: terminé par 0x00, passage ligne = 0x0A(\n)
+	
+	uint16_t FillColor;				// couleur de remplissage du bouton
+	uint16_t LightColor;			// couleur de lumière
+	uint16_t ShadowColor;			// couleur d'ombrage
+	uint16_t TextColor;				// couleur du texte
+}GLCD_Button;
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//                                  PROTOTYPES                                         //
+////////////////////////////////////////////////////////////////////////////////////////
+
+//----------------------------------------------------------------------------------------
+// OBTIENT SI L'ÉCRAN A ÉTÉ CORRECTEMENT CONFIGURÉ
+// return : true si écran configuré
+//----------------------------------------------------------------------------------------
+extern Boolean GLCD_GetStatus(void);		
+
+//----------------------------------------------------------------------------------------
+// INITIALISE ET ALLUME L'AFFICHEUR LCD
+// La méthode Timing_InitializeTimer() doit avoir été appelée, sinon le timer0 sera utilisé
+// par défaut pour générer les délais
+// Ne prend en charge que les afficheurs pilotés par le driver SSD1289
+// return: false si échec
+//----------------------------------------------------------------------------------------
+extern Boolean GLCD_Initialize (void);				// Initialise l'afficheur
+
+//----------------------------------------------------------------------------------------
+// ALLUME L'AFFICHEUR LCD DÉJA INITIALISÉ
+//----------------------------------------------------------------------------------------
+extern void GLCD_On(void);
+
+//----------------------------------------------------------------------------------------
+// ÉTEINT L'AFFICHEUR LCD
+//----------------------------------------------------------------------------------------
+extern void GLCD_Off(void);
+
+//----------------------------------------------------------------------------------------
+// ENTRE EN MODE SLEEP
+//----------------------------------------------------------------------------------------
+extern void GLCD_EnterSleep(void);
+
+//----------------------------------------------------------------------------------------
+// QUITTE LE MODE SLEEP
+//----------------------------------------------------------------------------------------
+extern void GLCD_ExitSleep(void);
+
+//----------------------------------------------------------------------------------------
+// EFFACE L'ÉCRAN AVEC LA COULEUR DE FOND PRÉCISÉE
+// color : couleur de fond en RGB : 5 bits rouge, 6 bits vert, 5 bits bleu
+//----------------------------------------------------------------------------------------
+extern void GLCD_Clear (unsigned short color);	// Efface l'écran avec la couleur précisée (65K)
+
+//----------------------------------------------------------------------------------------
+// CONFIGURE LES COULEURS DU TEXTE
+// backColor : Couleur de fond
+// foreColor : Couleur d'écriture
+//----------------------------------------------------------------------------------------
+extern void GLCD_SetTextColors(unsigned short backColor, unsigned short foreColor);
+
+//----------------------------------------------------------------------------------------
+// CONFIGURE LA COULEUR DU TEXTE
+// foreColor : Couleur d'écriture
+//----------------------------------------------------------------------------------------
+extern void GLCD_SetTextColor(unsigned short foreColor);
+
+//----------------------------------------------------------------------------------------
+// FENÊTRE D'ÉCRITURE = TOUT L'ÉCRAN
+//----------------------------------------------------------------------------------------
+extern void GLCD_WindowScreen(void);
+
+//----------------------------------------------------------------------------------------
+// FENÊTRE D'ÉCRITURE = RECTANGLE PRÉCISÉ
+// x: abcisse du coin supérieur gauche de la zone, par rapport au coin supérieur gauche LCD
+// y : ordonnée du coin supérieur gauche : idem
+// width : largeur de la zone
+// height : hauteur de la zone
+// return : true si les paramètres sont corrects
+//----------------------------------------------------------------------------------------
+extern Boolean GLCD_SetWindow(uint16_t x, uint16_t y, uint16_t width, uint16_t height);
+
+//----------------------------------------------------------------------------------------
+// ÉCRITURE D'UN CARACTÈRE : BAS NIVEAU - COORDONNÉES ABSOLUES
+// x : abscisse de départ du coin supérieur gauche par rapport au coin supérieur gauche LCD
+// y : ordonnée de départ du coin supérieur gauche : idem
+// car : pointeur sur le premier mot de 16 bits composant le caractère à afficher
+//----------------------------------------------------------------------------------------
+extern void GLCD_WriteChar(uint16_t x, uint16_t y, uint16_t *car);
+void GLCD_WriteChar1(unsigned int x, unsigned int y, unsigned char *car);
+
+//----------------------------------------------------------------------------------------
+// ÉCRITURE D'UN CARACTÈRE : HAUT NIVEAU
+// x : abscisse du coin supérieur gauche du caractère
+// y : ordonnée du coin supérieur gauche du caractère
+// car : code ASCII du caractère
+//----------------------------------------------------------------------------------------
+extern void GLCD_PrintChar(uint16_t x, uint16_t y, unsigned char car);
+
+//----------------------------------------------------------------------------------------
+// ÉCRITURE D'UN TEXTE
+// x : abscisse du coin supérieur gauche du premier caractère
+// y : ordonnée du coin supérieur gauche du premier carac
+// *str : pointeur sur la chaine de caractères terminée par un zéro
+// Le caractère 0x0A provoque un saut de ligne, 0x00 indique la fin de la chaîne
+// 0x0A = séquence \n 
+//----------------------------------------------------------------------------------------
+extern void GLCD_Print(uint16_t x, uint16_t y, unsigned char *str);
+
+//----------------------------------------------------------------------------------------
+// ÉCRITURE D'UNE VALEUR NON SIGNÉE CODÉE SUR 8 BITS AVEC LE NOMBRE MINIMAL DE CHIFFRES PRÉCIS2
+// x: Abscisse du coin supérieur gauche du premier chiffre
+// y: Ordonnée du coin supérieur gauche du premier chiffre
+// value: valeur à convertir, 8 bits non signée
+// minDigits: Nombre minimal de chiffres demandés (complétion éventuelle avec des "0" à gauche)
+// return: Nombre de digits réellements imprimés
+//----------------------------------------------------------------------------------------
+extern int GLCD_Print_Val8(uint16_t x, uint16_t y, unsigned char value, unsigned char minDigits);
+
+
+//----------------------------------------------------------------------------------------
+// ÉCRITURE D'UNE LIGNE DE TEXTE AVEC LA COULEUR SPÉCIFIÉE
+// x : abscisse du coin supérieur gauche du premier caractère
+// y : ordonnée du coin supérieur gauche du premier carac
+// *str : pointeur sur la chaine de caractères terminée par un zéro
+// color : couleur du texte
+// Ne modifie pas la couleur de texte par défaut
+//----------------------------------------------------------------------------------------
+extern void GLCD_PrintColor(uint16_t x, uint16_t y, unsigned char *str, uint16_t color);
+
+//----------------------------------------------------------------------------------------
+// EFFACE LES LIGNES DE TEXTE PRÉCISÉES
+// y: ordonnée du coin supérieur gauche de la ligne
+// nbLines : nombre de lignes
+//----------------------------------------------------------------------------------------
+extern void GLCD_ClearLines(uint16_t y, unsigned char nbLines);
+
+//----------------------------------------------------------------------------------------
+// EFFACE LA LIGNE DE TEXTE PRÉCISÉE
+// y: Ordonnée coin supérieur gauche de la ligne
+//----------------------------------------------------------------------------------------
+extern void GLCD_ClearLine(uint16_t y);
+
+//----------------------------------------------------------------------------------------
+// ALLUME UN PIXEL AVEC LA COULEUR SPÉCIFIÉE
+// x : abscisse du point
+// y : ordonnée du point
+// color : Couleur du point
+// return: true si OK, false si coordonnées incorrectes
+//----------------------------------------------------------------------------------------
+extern Boolean GLCD_SetPoint(uint16_t x, uint16_t y, uint16_t color);
+
+//----------------------------------------------------------------------------------------
+// TRACE UNE LIGNE DE LA COULEUR SPÉCIFIÉE
+// x1 : Abscisse du point d'origine
+// y1 : ordonnée du point d'origine
+// x2 : abscisse du point d'extrémité
+// y2 : ordonnée du point d'extrémité
+// color : Couleur de la ligne
+// return : false si erreurs de coordonnées, true si OK
+//----------------------------------------------------------------------------------------
+extern Boolean GLCD_DrawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
+
+//----------------------------------------------------------------------------------------
+// TRACE UNE CROIX CENTRÉE SUR LE POINT SPÉCIFIÉ
+// x : abscisse du centre
+// y : ordonnée du centre
+// len : Longueur des branches par rapport au centre
+// color : couleur des branches
+// centerColor : couleur du point central
+// return: true si dessin possible
+//----------------------------------------------------------------------------------------
+extern Boolean GLCD_DrawCross(uint16_t x, uint16_t y, unsigned char len, uint16_t color, uint16_t centerColor);
+
+//----------------------------------------------------------------------------------------
+// TRACE UN RECTANGLE DE LA COULEUR SPéCIFIÉE
+// x1 : Abscisse du coin supérieur gauche
+// y1 : ordonnée du coin supérieur gauche
+// x2 : abscisse du coin inférieur droit
+// y2 : ordonnée du coin inférieur droit
+// color : Couleur du rectangle
+// return : false si erreurs de coordonnées, true si OK
+//----------------------------------------------------------------------------------------
+extern Boolean GLCD_DrawRect(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
+
+//----------------------------------------------------------------------------------------
+// REMPLI UN RECTANGLE AVEC LA COULEUR SPÉCIFIÉE
+// x1 : Abscisse du coin supérieur gauche
+// y1 : ordonnée du coin supérieur gauche
+// x2 : abscisse du coin inférieur droit
+// y2 : ordonnée du coin inférieur droit
+// fillColor : Couleur de remplissage
+//----------------------------------------------------------------------------------------
+extern void GLCD_FillRect(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t fillColor);
+
+//----------------------------------------------------------------------------------------
+// DESSINE UN BOUTON
+// button : pointeur sur la structure définissant le bouton
+//----------------------------------------------------------------------------------------
+extern void GLCD_DrawButton(GLCD_Button *button);
+
+//----------------------------------------------------------------------------------------
+// DESSINE UN ENSEMBLE DE BOUTONS
+// buttons : pointeur sur le tableau de structures définissant les boutons
+// size : nombre de boutons
+//----------------------------------------------------------------------------------------
+extern void GLCD_DrawButtons(GLCD_Button *buttons, unsigned char size);
+
+extern int GLCD_Print_ValFloat(uint32_t x, uint32_t y, double v_floatNum_f32, unsigned char minDigits);
+
+
+

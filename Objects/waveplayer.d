@@ -1,0 +1,15 @@
+.\objects\waveplayer.o: wavePlayer.c
+.\objects\waveplayer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\ctype.h
+.\objects\waveplayer.o: LPC17xx_Bits.h
+.\objects\waveplayer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\waveplayer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\waveplayer.o: C:\Keil_v5\ARM\Inc\NXP\LPC17xx\LPC17xx.H
+.\objects\waveplayer.o: C:\Keil_v5\ARM\CMSIS\Include\core_cm3.h
+.\objects\waveplayer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\waveplayer.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
+.\objects\waveplayer.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
+.\objects\waveplayer.o: C:\Keil_v5\ARM\Inc\NXP\LPC17xx\system_LPC17xx.h
+.\objects\waveplayer.o: Timing.h
+.\objects\waveplayer.o: fat32.h
+.\objects\waveplayer.o: stdutils.h
+.\objects\waveplayer.o: wavePlayer.h

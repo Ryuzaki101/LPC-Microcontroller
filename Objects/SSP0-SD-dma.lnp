@@ -1,0 +1,18 @@
+--cpu Cortex-M3
+".\objects\startup_lpc17xx.o"
+".\objects\main.o"
+".\objects\asciilib_1.o"
+".\objects\fat32_1.o"
+".\objects\file_config_1.o"
+".\objects\gpio_1.o"
+".\objects\sdcard_1.o"
+".\objects\spi_1.o"
+".\objects\system_lpc17xx_1.o"
+".\objects\timing_1.o"
+".\objects\i2c.o"
+".\objects\uda1380.o"
+".\objects\rdb1768_audio.o"
+--strict --scatter ".\Objects\SSP0-SD-dma.sct"
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\Listings\SSP0-SD-dma.map" -o .\Objects\SSP0-SD-dma.axf

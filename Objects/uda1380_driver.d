@@ -1,0 +1,9 @@
+.\objects\uda1380_driver.o: uda1380_driver.c
+.\objects\uda1380_driver.o: i2c.h
+.\objects\uda1380_driver.o: C:\Keil_v5\ARM\Inc\NXP\LPC17xx\lpc17xx.h
+.\objects\uda1380_driver.o: C:\Keil_v5\ARM\CMSIS\Include\core_cm3.h
+.\objects\uda1380_driver.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\uda1380_driver.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
+.\objects\uda1380_driver.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
+.\objects\uda1380_driver.o: C:\Keil_v5\ARM\Inc\NXP\LPC17xx\system_LPC17xx.h
+.\objects\uda1380_driver.o: uda1380.h
